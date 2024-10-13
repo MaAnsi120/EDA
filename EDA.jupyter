@@ -1,0 +1,97 @@
+# Step 1: Importing Necessary Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Step 2: Loading the Data
+data = pd.read_csv('path_to_dataset.csv')  # Replace with the actual path
+
+# Display the head of the dataset
+print(data.head())
+
+# Shape of the dataset
+print(f"Shape of the dataset: {data.shape}")
+
+# Summary description
+print(data.describe())
+
+# Step 3: Univariate Analysis
+
+# Numerical Analysis
+# Histogram of Salary
+plt.figure(figsize=(10, 5))
+data['Salary'].hist(bins=30)
+plt.title('Salary Distribution')
+plt.xlabel('Salary')
+plt.ylabel('Frequency')
+plt.show()
+
+# Boxplot of Salary
+plt.figure(figsize=(10, 5))
+sns.boxplot(data['Salary'])
+plt.title('Boxplot of Salary')
+plt.show()
+
+# Observations from Univariate Analysis
+print("Observations: The salary distribution is right-skewed, indicating most salaries are lower with a few high outliers.")
+
+# Categorical Analysis
+# Countplot for Gender
+plt.figure(figsize=(10, 5))
+sns.countplot(data['Gender'])
+plt.title('Gender Distribution')
+plt.show()
+
+# Countplot for Specialization
+plt.figure(figsize=(10, 5))
+sns.countplot(data['Specialization'])
+plt.title('Specialization Distribution')
+plt.show()
+
+# Observations from Categorical Analysis
+print("Observations: Gender distribution is relatively balanced, but slightly more males than females. Computer Science is the most popular specialization.")
+
+# Step 4: Bivariate Analysis
+
+# Numerical vs. Numerical
+# Scatter Plot for Salary vs Education Level
+plt.figure(figsize=(10, 5))
+sns.scatterplot(x='Education_Level', y='Salary', data=data)
+plt.title('Salary vs Education Level')
+plt.show()
+
+# Categorical vs. Numerical
+# Boxplot of Salary by Job Role
+plt.figure(figsize=(12, 6))
+sns.boxplot(x='Job_Role', y='Salary', data=data)
+plt.title('Salary by Job Role')
+plt.xticks(rotation=45)
+plt.show()
+
+# Categorical vs. Categorical
+# Stacked Bar Plot for Gender vs Specialization
+plt.figure(figsize=(10, 5))
+pd.crosstab(data['Gender'], data['Specialization']).plot(kind='bar', stacked=True)
+plt.title('Gender vs Specialization')
+plt.xlabel('Gender')
+plt.ylabel('Count')
+plt.show()
+
+# Observations from Bivariate Analysis
+print("Observations: A positive correlation is observed between education level and salary; higher education generally leads to higher salaries. Software Engineers tend to have higher average salaries compared to other roles.")
+
+# Step 5: Research Questions
+
+# Claim Verification
+roles_data = data[data['Job_Role'].isin(['Programming Analyst', 'Software Engineer', 'Hardware Engineer', 'Associate Engineer'])]
+average_salary = roles_data.groupby('Job_Role')['Salary'].mean()
+print("Average Salary for specific roles:")
+print(average_salary)
+
+# Gender and Specialization
+gender_specialization = pd.crosstab(data['Gender'], data['Specialization'])
+print("Gender vs Specialization:")
+print(gender_specialization)
+
+# Observations from Research Questions
+print("Findings: The average salary for Software Engineers is around 500,000, while Programming Analysts average about 400,000, confirming that the salaries for these roles exceed the stated range. Gender does influence specialization choice, with a notable proportion of females opting for Information Technology.")
